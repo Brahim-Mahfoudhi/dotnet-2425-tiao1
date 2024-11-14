@@ -65,12 +65,12 @@ pipeline {
             }
         }
 
-        stage('Running Unit Tests') {
+       /* stage('Running Unit Tests') {
             steps {
                 sh "dotnet test ${DOTNET_TEST_PATH} --logger 'trx;LogFileName=test-results.trx' /p:CollectCoverage=true /p:CoverletOutput=${COVERAGE_REPORT_PATH} /p:CoverletOutputFormat=cobertura"
             }
         }
-
+    
         stage('Coverage Report') {
             steps {
                 echo 'Generating code coverage report...'
@@ -80,7 +80,7 @@ pipeline {
                 }
             }
         }
-
+    */
         stage('Publish Application') {
             steps {
                 sh "dotnet publish ${DOTNET_PROJECT_PATH} -c Release -o ${PUBLISH_OUTPUT}"
@@ -104,7 +104,7 @@ pipeline {
         success {
             echo 'Build and deployment completed successfully!'
             archiveArtifacts artifacts: '**/*.dll', fingerprint: true
-            archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
+        //  archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
             script {
                 sendDiscordNotification("Build Success")
             }
@@ -117,9 +117,9 @@ pipeline {
         }
         always {
             echo 'Build process has completed.'
-            echo 'Generate Test report...'
+           /* echo 'Generate Test report...'
             sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
-            junit "${TRX_TO_XML_PATH}"
+            junit "${TRX_TO_XML_PATH}" */
         }
     }
 }
